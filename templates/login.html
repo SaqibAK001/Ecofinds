@@ -497,7 +497,7 @@
                             <div class="password-input-wrapper">
                                 <input type="password" id="password" name="password" class="form-input" 
                                        placeholder="Enter your password" required>
-                                <button type="button" class="password-toggle" onclick="togglePassword()">👁️</button>
+                                <button type="button" class="password-toggle" onclick="togglePassword()">👁</button>
                             </div>
                         </div>
 
@@ -535,138 +535,149 @@
         </div>
     </main>
 
-    <script>
-        // Create floating elements
-        function createFloatingElements() {
-            const container = document.getElementById('floatingElements');
-            const elementCount = 8;
+   <script>
+    // Create floating elements
+    function createFloatingElements() {
+        const container = document.getElementById('floatingElements');
+        const elementCount = 8;
+        
+        for (let i = 0; i < elementCount; i++) {
+            const element = document.createElement('div');
+            element.className = 'floating-element';
             
-            for (let i = 0; i < elementCount; i++) {
-                const element = document.createElement('div');
-                element.className = 'floating-element';
-                
-                const size = Math.random() * 60 + 20;
-                const left = Math.random() * 100;
-                const delay = Math.random() * 25;
-                
-                element.style.width = size + 'px';
-                element.style.height = size + 'px';
-                element.style.left = left + '%';
-                element.style.animationDelay = delay + 's';
-                
-                container.appendChild(element);
-            }
+            const size = Math.random() * 60 + 20;
+            const left = Math.random() * 100;
+            const delay = Math.random() * 25;
+            
+            element.style.width = size + 'px';
+            element.style.height = size + 'px';
+            element.style.left = left + '%';
+            element.style.animationDelay = delay + 's';
+            
+            container.appendChild(element);
         }
+    }
 
-        // Password toggle functionality
-        function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            const toggleBtn = document.querySelector('.password-toggle');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleBtn.textContent = '🙈';
+    // Password toggle functionality
+    function togglePassword() {
+        const passwordInput = document.getElementById('password');
+        const toggleBtn = document.querySelector('.password-toggle');
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleBtn.textContent = '🙈';
+        } else {
+            passwordInput.type = 'password';
+            toggleBtn.textContent = '👁';
+        }
+    }
+
+    // Form validation and submission
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const alertContainer = document.getElementById('alertContainer');
+        
+        // Clear previous alerts
+        alertContainer.innerHTML = '';
+        
+        // Basic validation
+        if (!email || !password) {
+            showAlert('Please fill in all required fields.', 'error');
+            return;
+        }
+        
+        if (!isValidEmail(email)) {
+            showAlert('Please enter a valid email address.', 'error');
+            return;
+        }
+        
+        // Simulate login process
+        const submitBtn = document.querySelector('.login-btn');
+        const originalText = submitBtn.textContent;
+        
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Signing In...';
+        
+        // Simulate API call
+        setTimeout(() => {
+            // For demo purposes, accept any email/password combination
+            if (email && password.length >= 6) {
+                showAlert('Login successful! Redirecting...', 'success');
+                
+                // ✅ SET USER IN LOCALSTORAGE (SIMULATED AUTH)
+                localStorage.setItem('ecocart_user', email.split('@')[0]);
+                
+                // ✅ REDIRECT TO INDEX.HTML AFTER SUCCESS
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1500);
             } else {
-                passwordInput.type = 'password';
-                toggleBtn.textContent = '👁️';
+                showAlert('Invalid email or password. Please try again.', 'error');
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
             }
-        }
+        }, 1500);
+    });
 
-        // Form validation and submission
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value;
-            const alertContainer = document.getElementById('alertContainer');
-            
-            // Clear previous alerts
-            alertContainer.innerHTML = '';
-            
-            // Basic validation
-            if (!email || !password) {
-                showAlert('Please fill in all required fields.', 'error');
-                return;
+    // Social login functions
+    function loginWithGoogle() {
+        showAlert('Google login integration would be implemented here.', 'success');
+    }
+
+    function loginWithFacebook() {
+        showAlert('Facebook login integration would be implemented here.', 'success');
+    }
+
+    // Utility functions
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
+    function showAlert(message, type) {
+        const alertContainer = document.getElementById('alertContainer');
+        const alert = document.createElement('div');
+        alert.className = `alert alert-${type}`;
+        alert.textContent = message;
+        
+        alertContainer.innerHTML = '';
+        alertContainer.appendChild(alert);
+        
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+            alert.remove();
+        }, 5000);
+    }
+
+    // Form field enhancements
+    document.querySelectorAll('.form-input').forEach(input => {
+        input.addEventListener('focus', function() {
+            this.parentNode.classList.add('focused');
+        });
+        
+        input.addEventListener('blur', function() {
+            if (!this.value) {
+                this.parentNode.classList.remove('focused');
             }
-            
-            if (!isValidEmail(email)) {
-                showAlert('Please enter a valid email address.', 'error');
-                return;
-            }
-            
-            // Simulate login process
-            const submitBtn = document.querySelector('.login-btn');
-            const originalText = submitBtn.textContent;
-            
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Signing In...';
-            
-            // Simulate API call
-            setTimeout(() => {
-                // For demo purposes, accept any email/password combination
-                if (email && password.length >= 6) {
-                    showAlert('Login successful! Redirecting...', 'success');
-                    setTimeout(() => {
-                        window.location.href = '/dashboard';
-                    }, 1500);
-                } else {
-                    showAlert('Invalid email or password. Please try again.', 'error');
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = originalText;
-                }
-            }, 1500);
         });
+    });
 
-        // Social login functions
-        function loginWithGoogle() {
-            showAlert('Google login integration would be implemented here.', 'success');
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+        createFloatingElements();
+        
+        // Auto-focus email field
+        document.getElementById('email').focus();
+
+        // ✅ Show success message if redirected from registration
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('registered') === 'true') {
+            showAlert('Registration successful! Please log in.', 'success');
         }
-
-        function loginWithFacebook() {
-            showAlert('Facebook login integration would be implemented here.', 'success');
-        }
-
-        // Utility functions
-        function isValidEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        }
-
-        function showAlert(message, type) {
-            const alertContainer = document.getElementById('alertContainer');
-            const alert = document.createElement('div');
-            alert.className = `alert alert-${type}`;
-            alert.textContent = message;
-            
-            alertContainer.innerHTML = '';
-            alertContainer.appendChild(alert);
-            
-            // Auto-remove after 5 seconds
-            setTimeout(() => {
-                alert.remove();
-            }, 5000);
-        }
-
-        // Form field enhancements
-        document.querySelectorAll('.form-input').forEach(input => {
-            input.addEventListener('focus', function() {
-                this.parentNode.classList.add('focused');
-            });
-            
-            input.addEventListener('blur', function() {
-                if (!this.value) {
-                    this.parentNode.classList.remove('focused');
-                }
-            });
-        });
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            createFloatingElements();
-            
-            // Auto-focus email field
-            document.getElementById('email').focus();
-        });
-    </script>
+    });
+</script>
 </body>
 </html>

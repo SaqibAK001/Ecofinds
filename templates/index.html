@@ -557,12 +557,12 @@
             <nav>
                 <a href="/" class="logo">🌱 EcoFlow</a>
                 <ul class="nav-links">
-                    <li><a href="./products.html">Browse</a></li>
-                    <li><a href="/add_product">Sell</a></li>
-                    <li><a href="/dashboard">Dashboard</a></li>
-                    <li><a href="/cart">Cart</a></li>
-                    <li><a href="/login" class="btn btn-secondary">Login</a></li>
-                    <li><a href="/register" class="btn btn-primary">Register</a></li>
+                    <li><a href="products.html">Browse</a></li>
+                    <li><a href="add_product">Sell</a></li>
+                    <li><a href="dashboard">Dashboard</a></li>
+                    <li><a href="cart">Cart</a></li>
+                    <li><a href="login" class="btn btn-secondary">Login</a></li>
+                    <li><a href="register" class="btn btn-primary">Register</a></li>
                 </ul>
             </nav>
         </div>
@@ -628,6 +628,16 @@
                             <div class="eco-badge">Eco-Friendly</div>
                         </div>
                     </div>
+
+                    <!-- In the product card section of index.html -->
+                    <div class="eco-score-display">
+                        <div class="eco-score-bar">
+                            <div class="eco-score-fill" style="width: {{ product.eco_score }}%;"></div>
+                        </div>
+                        <span class="eco-score-value">{{ product.eco_score }}/100</span>
+                        <span class="eco-score-label">Eco Score</span>
+                    </div>
+
                     <div class="product-card">
                         <div class="product-image">👕</div>
                         <div class="product-info">
